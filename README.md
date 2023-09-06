@@ -7,6 +7,7 @@ This application is used to retrieve and displays data from a database. Database
 ## Technical details
 
 Framework: .Net 6
+
 Database: SQLite
  
 ## Installation
