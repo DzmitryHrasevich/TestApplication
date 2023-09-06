@@ -4,7 +4,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Extensions;
-using WebApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,8 +58,6 @@ else
 }
 
 MappingExtensions.Configure(app.Services.GetService<IMapper>());
-
-app.UseMiddleware<LoggingMiddleware>();
 
 app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseHttpsRedirection();
