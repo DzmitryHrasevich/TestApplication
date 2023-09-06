@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Business;
 using WebApp.Data;
 using WebApp.Extensions;
 
@@ -33,6 +34,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(x =>
     {
         x.RegisterModule(new DataModule());
+        x.RegisterModule(new BusinessModule());
     })
     .ConfigureLogging((hostingContext, logging) =>
     {
