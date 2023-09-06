@@ -3,6 +3,11 @@
 ## Description
 
 This application is used to retrieve and displays data from a database. Database contains two tables: Organisations and Employees.
+
+## Technical details
+
+Framework: .Net 6
+Database: SQLite
  
 ## Installation
 
