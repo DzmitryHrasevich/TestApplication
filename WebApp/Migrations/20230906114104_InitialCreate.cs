@@ -36,24 +36,29 @@ namespace WebApp.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     OrganisationNumber = table.Column<string>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    OrganisationNumber1 = table.Column<string>(type: "TEXT", nullable: false)
+                    LastName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Organisations_OrganisationNumber1",
-                        column: x => x.OrganisationNumber1,
+                        name: "FK_Employees_Organisations_OrganisationNumber",
+                        column: x => x.OrganisationNumber,
                         principalTable: "Organisations",
                         principalColumn: "OrganisationNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_OrganisationNumber1",
+                name: "IX_Employees_OrganisationNumber",
                 table: "Employees",
-                column: "OrganisationNumber1");
+                column: "OrganisationNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Organisations_OrganisationNumber",
+                table: "Organisations",
+                column: "OrganisationNumber",
+                unique: true);
         }
 
         /// <inheritdoc />

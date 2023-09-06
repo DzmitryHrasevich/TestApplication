@@ -10,7 +10,8 @@ public class OrganisationContextConfiguration : IEntityTypeConfiguration<Organis
     {
         builder
             .HasMany(t => t.Employees)
-            .WithOne(t => t.Organisation);
+            .WithOne(t => t.Organisation)
+            .HasForeignKey(t => t.OrganisationNumber);
         
         builder
             .HasIndex(t => t.OrganisationNumber)

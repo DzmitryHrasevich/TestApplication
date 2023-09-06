@@ -10,7 +10,7 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230906104558_InitialCreate")]
+    [Migration("20230906114104_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace WebApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
 
-            modelBuilder.Entity("WebApp.Entities.Employee", b =>
+            modelBuilder.Entity("WebApp.Data.Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,18 +37,14 @@ namespace WebApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OrganisationNumber1")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrganisationNumber1");
+                    b.HasIndex("OrganisationNumber");
 
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Organisation", b =>
+            modelBuilder.Entity("WebApp.Data.Entities.Organisation", b =>
                 {
                     b.Property<string>("OrganisationNumber")
                         .HasColumnType("TEXT");
@@ -80,21 +76,24 @@ namespace WebApp.Migrations
 
                     b.HasKey("OrganisationNumber");
 
+                    b.HasIndex("OrganisationNumber")
+                        .IsUnique();
+
                     b.ToTable("Organisations");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Employee", b =>
+            modelBuilder.Entity("WebApp.Data.Entities.Employee", b =>
                 {
-                    b.HasOne("WebApp.Entities.Organisation", "Organisation")
+                    b.HasOne("WebApp.Data.Entities.Organisation", "Organisation")
                         .WithMany("Employees")
-                        .HasForeignKey("OrganisationNumber1")
+                        .HasForeignKey("OrganisationNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Organisation");
                 });
 
-            modelBuilder.Entity("WebApp.Entities.Organisation", b =>
+            modelBuilder.Entity("WebApp.Data.Entities.Organisation", b =>
                 {
                     b.Navigation("Employees");
                 });
