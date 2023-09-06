@@ -23,6 +23,7 @@ public class OrganisationController : ControllerBase
     public async Task<ActionResult<IEnumerable<OrganisationDto>>> GetOrganisations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var organisations = await _context.Organisations
+            .Include(x => x.Employees)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
