@@ -34,7 +34,13 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(x =>
     {
         x.RegisterModule(new DataModule());
-        // x.RegisterModule(new BusinessModule());
+    })
+    .ConfigureLogging((hostingContext, logging) =>
+    {
+        logging.ClearProviders();
+        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+        logging.AddConsole();
+        logging.AddDebug();
     });
 
 var app = builder.Build();
