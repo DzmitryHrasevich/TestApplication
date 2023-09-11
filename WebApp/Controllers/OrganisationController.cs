@@ -1,8 +1,6 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using WebApp.Business.Contracts;
 using WebApp.Business.Models;
-using WebApp.Data;
 
 namespace WebApp.Controllers;
 
@@ -10,29 +8,16 @@ namespace WebApp.Controllers;
 [ApiController]
 public class OrganisationController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    
-    public OrganisationController(ApplicationDbContext context, IMapper mapper)
+    private readonly IOrganisationService _service;
+
+    public OrganisationController(IOrganisationService service)
     {
-        _context = context;
-        _mapper = mapper;
+        _service = service;
     }
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<OrganisationDto>>> GetOrganisations([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var organisations = await _context.Organisations
-            .Include(x => x.Employees)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-
-        if (!organisations.Any())
-        {
-            return NotFound();
-        }
-        
-        return Ok(_mapper.Map<List<OrganisationDto>>(organisations));
+        return Ok(await _service.GetOrganisations(pageNumber, pageSize));
     }
 }

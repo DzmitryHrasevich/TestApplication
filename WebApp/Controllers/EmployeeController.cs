@@ -1,8 +1,6 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using WebApp.Business.Contracts;
 using WebApp.Business.Models;
-using WebApp.Data;
 
 namespace WebApp.Controllers;
 
@@ -10,29 +8,16 @@ namespace WebApp.Controllers;
 [ApiController]
 public class EmployeeController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IMapper _mapper;
-    
-    public EmployeeController(ApplicationDbContext context, IMapper mapper)
+    private readonly IEmployeeService _service;
+
+    public EmployeeController(IEmployeeService service)
     {
-        _context = context;
-        _mapper = mapper;
+        _service = service;
     }
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployees([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var employees = await _context.Employees
-            .Include(x => x.Organisation)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-
-        if (!employees.Any())
-        {
-            return NotFound();
-        }
-        
-        return Ok(_mapper.Map<List<EmployeeDto>>(employees));
+        return Ok(await _service.GetEmployees(pageNumber, pageSize));
     }
 }
